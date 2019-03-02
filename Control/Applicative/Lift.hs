@@ -91,10 +91,8 @@ instance (Traversable f) => Traversable (Lift f) where
 instance (Applicative f) => Applicative (Lift f) where
     pure = Pure
     {-# INLINE pure #-}
-    Pure f <*> Pure x = Pure (f x)
-    Pure f <*> Other y = Other (f <$> y)
-    Other f <*> Pure x = Other (($ x) <$> f)
-    Other f <*> Other y = Other (f <*> y)
+    Pure f <*> ax = f <$> ax
+    Other f <*> ax = Other (f <*> unLift ax)
     {-# INLINE (<*>) #-}
 
 -- | A combination is 'Pure' only either part is.
