@@ -65,6 +65,8 @@ instance (Show1 f, Show a) => Show (Backwards f a) where showsPrec = showsPrec1
 instance (Functor f) => Functor (Backwards f) where
     fmap f (Backwards a) = Backwards (fmap f a)
     {-# INLINE fmap #-}
+    x <$ Backwards a = Backwards (x <$ a)
+    {-# INLINE (<$) #-}
 
 -- | Apply @f@-actions in the reverse order.
 instance (Applicative f) => Applicative (Backwards f) where
@@ -72,6 +74,16 @@ instance (Applicative f) => Applicative (Backwards f) where
     {-# INLINE pure #-}
     Backwards f <*> Backwards a = Backwards (a <**> f)
     {-# INLINE (<*>) #-}
+#if MIN_VERSION_base(4,10,0)
+    liftA2 f (Backwards m) (Backwards n) = Backwards $ liftA2 (flip f) n m
+    {-# INLINE liftA2 #-}
+#endif
+#if MIN_VERSION_base(4,2,0)
+    Backwards xs *> Backwards ys = Backwards (ys <* xs)
+    {-# INLINE (*>) #-}
+    Backwards ys <* Backwards xs = Backwards (xs *> ys)
+    {-# INLINE (<*) #-}
+#endif
 
 -- | Try alternatives in the same order as @f@.
 instance (Alternative f) => Alternative (Backwards f) where
