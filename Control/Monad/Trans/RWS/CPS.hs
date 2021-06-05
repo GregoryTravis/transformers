@@ -18,7 +18,9 @@
 -- Stability   :  experimental
 -- Portability :  portable
 --
--- A monad transformer that combines 'ReaderT', 'WriterT' and 'StateT'.
+-- A monad transformer that combines 'Control.Monad.Trans.Reader.ReaderT',
+-- 'Control.Monad.Trans.Writer.CPS.WriterT' and
+-- 'Control.Monad.Trans.State.Strict.StateT'.
 -- This version uses continuation-passing-style for the writer part
 -- to achieve constant space usage.
 -- For a lazy version with the same interface,

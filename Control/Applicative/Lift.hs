@@ -136,8 +136,9 @@ elimLift _ g (Other e) = g e
 
 -- | An applicative functor that collects a monoid (e.g. lists) of errors.
 -- A sequence of computations fails if any of its components do, but
--- unlike monads made with 'ExceptT' from "Control.Monad.Trans.Except",
--- these computations continue after an error, collecting all the errors.
+-- unlike monads made with 'Control.Monad.Trans.Except.ExceptT' from
+-- "Control.Monad.Trans.Except", these computations continue after an
+-- error, collecting all the errors.
 --
 -- * @'pure' f '<*>' 'pure' x = 'pure' (f x)@
 --
