@@ -42,6 +42,9 @@ module Control.Monad.Trans.Except (
     -- * Exception operations
     throwE,
     catchE,
+    handleE,
+    tryE,
+    finallyE,
     -- * Lifting other operations
     liftCallCC,
     liftListen,
@@ -298,6 +301,29 @@ m `catchE` h = ExceptT $ do
         Left  l -> runExceptT (h l)
         Right r -> return (Right r)
 {-# INLINE catchE #-}
+
+-- | The same as @'flip' 'catchE'@, which is useful in situations where
+-- the code for the handler is shorter.
+handleE :: Monad m => (e -> ExceptT e' m a) -> ExceptT e m a -> ExceptT e' m a
+handleE = flip catchE
+{-# INLINE handleE #-}
+
+-- | Similar to 'catchE', but returns an 'Either' result which is
+-- @('Right' a)@ if no exception was thown, or @('Left' ex)@ if an
+-- exception @ex@ was thrown.
+tryE :: Monad m => ExceptT e m a -> ExceptT e m (Either e a)
+tryE m = catchE (liftM Right m) (return . Left)
+{-# INLINE tryE #-}
+
+-- | @'finallyE' a b@ executes computation @a@ followed by computation @b@,
+-- even if @a@ exits early by throwing an exception.  In the latter case,
+-- the exception is re-thrown after @b@ has been executed.
+finallyE :: Monad m => ExceptT e m a -> ExceptT e m () -> ExceptT e m a
+finallyE m closer = do
+    res <- tryE m
+    closer
+    either throwE pure res
+{-# INLINE finallyE #-}
 
 -- | Lift a @callCC@ operation to the new monad.
 liftCallCC :: CallCC m (Either e a) (Either e b) -> CallCC (ExceptT e m) a b
