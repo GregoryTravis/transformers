@@ -326,7 +326,7 @@ finallyE :: Monad m => ExceptT e m a -> ExceptT e m () -> ExceptT e m a
 finallyE m closer = do
     res <- tryE m
     closer
-    either throwE pure res
+    either throwE return res
 {-# INLINE finallyE #-}
 
 -- | Lift a @callCC@ operation to the new monad.
