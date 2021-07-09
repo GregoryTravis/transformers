@@ -36,13 +36,15 @@ import Data.Functor.Contravariant
 
 import Control.Applicative
 import Data.Foldable
+#if !(MIN_VERSION_base(4,8,0))
 import Data.Monoid (Monoid(..))
 import Data.Traversable (Traversable(traverse))
+#endif
 #if MIN_VERSION_base(4,8,0)
 import Data.Bifunctor (Bifunctor(..))
 #endif
-#if MIN_VERSION_base(4,9,0)
-import Data.Semigroup (Semigroup(..))
+#if (MIN_VERSION_base(4,9,0)) && !(MIN_VERSION_base(4,11,0))
+import Data.Semigroup (Semigroup((<>)))
 #endif
 #if MIN_VERSION_base(4,10,0)
 import Data.Bifoldable (Bifoldable(..))

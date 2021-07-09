@@ -77,7 +77,9 @@ import Control.Monad
 import qualified Control.Monad.Fail as Fail
 #endif
 import Control.Monad.Fix
+#if !(MIN_VERSION_base(4,8,0))
 import Data.Monoid
+#endif
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics
 #endif

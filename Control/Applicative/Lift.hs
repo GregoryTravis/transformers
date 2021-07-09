@@ -35,10 +35,12 @@ module Control.Applicative.Lift (
 import Data.Functor.Classes
 
 import Control.Applicative
-import Data.Foldable (Foldable(foldMap))
 import Data.Functor.Constant
+#if !(MIN_VERSION_base(4,8,0))
+import Data.Foldable (Foldable(foldMap))
 import Data.Monoid (Monoid(..))
 import Data.Traversable (Traversable(traverse))
+#endif
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics
 #endif

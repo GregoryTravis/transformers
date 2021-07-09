@@ -51,7 +51,9 @@ import Control.Monad.Fix (MonadFix(mfix))
 import Control.Monad.Zip (MonadZip(mzipWith))
 #endif
 import Data.Foldable
+#if !(MIN_VERSION_base(4,8,0))
 import Data.Traversable (Traversable(traverse))
+#endif
 import Prelude hiding (foldr, foldr1, foldl, foldl1, null, length)
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics

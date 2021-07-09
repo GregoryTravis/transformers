@@ -40,7 +40,9 @@ import Control.Monad
 import qualified Control.Monad.Fail as Fail
 #endif
 import Data.Foldable
-import Data.Traversable
+#if !(MIN_VERSION_base(4,8,0))
+import Data.Traversable (Traversable(traverse))
+#endif
 import Data.Monoid
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics

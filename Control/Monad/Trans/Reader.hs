@@ -64,8 +64,8 @@ import Control.Monad.Instances ()  -- deprecated from base-4.6
 #if MIN_VERSION_base(4,4,0)
 import Control.Monad.Zip (MonadZip(mzipWith))
 #endif
-#if MIN_VERSION_base(4,2,0)
-import Data.Functor(Functor(..))
+#if (MIN_VERSION_base(4,2,0)) && !(MIN_VERSION_base(4,8,0))
+import Data.Functor ((<$))
 #endif
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics
