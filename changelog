@@ -1,5 +1,8 @@
 -*-change-log-*-
 
+0.6.0.2 Ross Paterson <R.Paterson@city.ac.uk> Jul 2021
+	* Further backward compatability fix
+
 0.6.0.1 Ross Paterson <R.Paterson@city.ac.uk> Jul 2021
 	* Backward compatability fixes
 
