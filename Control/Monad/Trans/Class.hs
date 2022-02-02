@@ -5,7 +5,7 @@
 #if __GLASGOW_HASKELL__ >= 710 && __GLASGOW_HASKELL__ < 802
 {-# LANGUAGE AutoDeriveTypeable #-}
 #endif
-#if __GLASGOW_HASKELL__ >= 806
+#if __GLASGOW_HASKELL__ >= 808
 {-# LANGUAGE QuantifiedConstraints #-}
 #endif
 -----------------------------------------------------------------------------
@@ -58,13 +58,14 @@ module Control.Monad.Trans.Class (
 --
 -- * @'lift' (m >>= f) = 'lift' m >>= ('lift' . f)@
 --
--- Since 0.6.0.0, the requirement that @t m@ be a 'Monad' is enforced
--- by the implication constraint @forall m. 'Monad' m => 'Monad' (t m)@
--- enabled by the @QuantifiedConstraints@ extension (present in GHC 8.6
--- and later).
-#if __GLASGOW_HASKELL__ >= 806
+-- Since 0.6.0.0 and for GHC 8.8 and later, the requirement that @t m@
+-- be a 'Monad' is enforced by the implication constraint
+-- @forall m. 'Monad' m => 'Monad' (t m)@ enabled by the
+-- @QuantifiedConstraints@ extension.
+#if __GLASGOW_HASKELL__ >= 808
 class (forall m. Monad m => Monad (t m)) => MonadTrans t where
 #else
+-- prior to GHC 8.8 (base-4.13), the Monad class included fail
 class MonadTrans t where
 #endif
     -- | Lift a computation from the argument monad to the constructed monad.
