@@ -1,5 +1,8 @@
 -*-change-log-*-
 
+0.6.0.4 Ross Paterson <R.Paterson@city.ac.uk> Feb 2022
+	* Restrict deriving (Generic) to GHC >= 7.4
+
 0.6.0.3 Ross Paterson <R.Paterson@city.ac.uk> Feb 2022
 	* Restrict MonadTrans constraint to GHC >= 8.8
 
