@@ -62,6 +62,18 @@ module Control.Monad.Trans.Class (
 -- be a 'Monad' is enforced by the implication constraint
 -- @forall m. 'Monad' m => 'Monad' (t m)@ enabled by the
 -- @QuantifiedConstraints@ extension.
+--
+-- === __Ambiguity error with GHC 9.0 to 9.2.2__
+-- These versions of GHC have a bug
+-- (<https://gitlab.haskell.org/ghc/ghc/-/issues/20582>)
+-- which causes constraints like
+--
+-- @
+-- (MonadTrans t, forall m. Monad m => Monad (t m)) => ...
+-- @
+--
+-- to be reported as ambiguous.  For transformers 0.6 and later, this can
+-- be fixed by removing the second constraint, which is implied by the first.
 #if __GLASGOW_HASKELL__ >= 806
 class (forall m. Monad m => Monad (t m)) => MonadTrans t where
 #else
