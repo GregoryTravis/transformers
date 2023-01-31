@@ -36,6 +36,9 @@ module Control.Monad.Trans.Identity (
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import Control.Monad.Signatures
 import Control.Monad.Trans.Class (MonadTrans(lift))
+#if MIN_VERSION_base(4,18,0)
+import Data.Foldable1 (Foldable1(foldMap1))
+#endif
 import Data.Functor.Classes
 #if MIN_VERSION_base(4,12,0)
 import Data.Functor.Contravariant
@@ -174,6 +177,12 @@ instance MonadTrans IdentityT where
 instance Contravariant f => Contravariant (IdentityT f) where
     contramap f = IdentityT . contramap f . runIdentityT
     {-# INLINE contramap #-}
+#endif
+
+#if MIN_VERSION_base(4,18,0)
+instance Foldable1 m => Foldable1 (IdentityT m) where
+  foldMap1 f = foldMap1 f . runIdentityT
+  {-# INLINE foldMap1 #-}
 #endif
 
 -- | Lift a unary operation to the new monad.

@@ -32,6 +32,9 @@ module Control.Applicative.Lift (
     eitherToErrors
   ) where
 
+#if MIN_VERSION_base(4,18,0)
+import Data.Foldable1 (Foldable1(foldMap1))
+#endif
 import Data.Functor.Classes
 
 import Control.Applicative
@@ -114,6 +117,13 @@ instance (Alternative f) => Alternative (Lift f) where
     Other _ <|> Pure y = Pure y
     Other x <|> Other y = Other (x <|> y)
     {-# INLINE (<|>) #-}
+
+#if MIN_VERSION_base(4,18,0)
+instance Foldable1 f => Foldable1 (Lift f) where
+  foldMap1 f (Pure x)  = f x
+  foldMap1 f (Other y) = foldMap1 f y
+  {-# INLINE foldMap1 #-}
+#endif
 
 -- | Projection to the other functor.
 unLift :: (Applicative f) => Lift f a -> f a

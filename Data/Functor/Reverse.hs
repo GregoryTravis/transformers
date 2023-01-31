@@ -28,6 +28,9 @@ module Data.Functor.Reverse (
   ) where
 
 import Control.Applicative.Backwards
+#if MIN_VERSION_base(4,18,0)
+import Data.Foldable1 (Foldable1(foldMap1))
+#endif
 import Data.Functor.Classes
 #if MIN_VERSION_base(4,12,0)
 import Data.Functor.Contravariant
@@ -138,6 +141,12 @@ instance (Foldable f) => Foldable (Reverse f) where
 #if MIN_VERSION_base(4,8,0)
     null (Reverse t) = null t
     length (Reverse t) = length t
+#endif
+
+#if MIN_VERSION_base(4,18,0)
+-- | Fold from right to left.
+instance Foldable1 f => Foldable1 (Reverse f) where
+  foldMap1 f = getDual . foldMap1 (Dual . f) . getReverse
 #endif
 
 -- | Traverse from right to left.

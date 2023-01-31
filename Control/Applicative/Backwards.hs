@@ -27,6 +27,9 @@ module Control.Applicative.Backwards (
     Backwards(..),
   ) where
 
+#if MIN_VERSION_base(4,18,0)
+import Data.Foldable1 (Foldable1(foldMap1))
+#endif
 import Data.Functor.Classes
 #if MIN_VERSION_base(4,12,0)
 import Data.Functor.Contravariant
@@ -132,4 +135,11 @@ instance (Traversable f) => Traversable (Backwards f) where
 instance Contravariant f => Contravariant (Backwards f) where
     contramap f = Backwards . contramap f . forwards
     {-# INLINE contramap #-}
+#endif
+
+#if MIN_VERSION_base(4,18,0)
+-- | Derived instance.
+instance Foldable1 f => Foldable1 (Backwards f) where
+  foldMap1 f = foldMap1 f . forwards
+  {-# INLINE foldMap1 #-}
 #endif
