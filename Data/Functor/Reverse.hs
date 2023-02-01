@@ -145,8 +145,8 @@ instance (Foldable f) => Foldable (Reverse f) where
 
 #if MIN_VERSION_base(4,18,0)
 -- | Fold from right to left.
-instance Foldable1 f => Foldable1 (Reverse f) where
-  foldMap1 f = getDual . foldMap1 (Dual . f) . getReverse
+instance (Foldable1 f) => Foldable1 (Reverse f) where
+    foldMap1 f (Reverse t) = getDual (foldMap1 (Dual . f) t)
 #endif
 
 -- | Traverse from right to left.
@@ -157,7 +157,7 @@ instance (Traversable f) => Traversable (Reverse f) where
 
 #if MIN_VERSION_base(4,12,0)
 -- | Derived instance.
-instance Contravariant f => Contravariant (Reverse f) where
+instance (Contravariant f) => Contravariant (Reverse f) where
     contramap f = Reverse . contramap f . getReverse
     {-# INLINE contramap #-}
 #endif

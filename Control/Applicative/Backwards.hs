@@ -123,6 +123,13 @@ instance (Foldable f) => Foldable (Backwards f) where
     length (Backwards t) = length t
 #endif
 
+#if MIN_VERSION_base(4,18,0)
+-- | Derived instance.
+instance (Foldable1 f) => Foldable1 (Backwards f) where
+    foldMap1 f (Backwards t) = foldMap1 f t
+    {-# INLINE foldMap1 #-}
+#endif
+
 -- | Derived instance.
 instance (Traversable f) => Traversable (Backwards f) where
     traverse f (Backwards t) = fmap Backwards (traverse f t)
@@ -132,14 +139,7 @@ instance (Traversable f) => Traversable (Backwards f) where
 
 #if MIN_VERSION_base(4,12,0)
 -- | Derived instance.
-instance Contravariant f => Contravariant (Backwards f) where
+instance (Contravariant f) => Contravariant (Backwards f) where
     contramap f = Backwards . contramap f . forwards
     {-# INLINE contramap #-}
-#endif
-
-#if MIN_VERSION_base(4,18,0)
--- | Derived instance.
-instance Foldable1 f => Foldable1 (Backwards f) where
-  foldMap1 f = foldMap1 f . forwards
-  {-# INLINE foldMap1 #-}
 #endif

@@ -111,6 +111,12 @@ instance (Foldable f) => Foldable (IdentityT f) where
     length (IdentityT t) = length t
 #endif
 
+#if MIN_VERSION_base(4,18,0)
+instance (Foldable1 m) => Foldable1 (IdentityT m) where
+    foldMap1 f (IdentityT t) = foldMap1 f t
+    {-# INLINE foldMap1 #-}
+#endif
+
 instance (Traversable f) => Traversable (IdentityT f) where
     traverse f (IdentityT a) = IdentityT <$> traverse f a
     {-# INLINE traverse #-}
@@ -174,15 +180,9 @@ instance MonadTrans IdentityT where
     {-# INLINE lift #-}
 
 #if MIN_VERSION_base(4,12,0)
-instance Contravariant f => Contravariant (IdentityT f) where
+instance (Contravariant f) => Contravariant (IdentityT f) where
     contramap f = IdentityT . contramap f . runIdentityT
     {-# INLINE contramap #-}
-#endif
-
-#if MIN_VERSION_base(4,18,0)
-instance Foldable1 m => Foldable1 (IdentityT m) where
-  foldMap1 f = foldMap1 f . runIdentityT
-  {-# INLINE foldMap1 #-}
 #endif
 
 -- | Lift a unary operation to the new monad.

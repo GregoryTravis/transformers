@@ -119,10 +119,10 @@ instance (Alternative f) => Alternative (Lift f) where
     {-# INLINE (<|>) #-}
 
 #if MIN_VERSION_base(4,18,0)
-instance Foldable1 f => Foldable1 (Lift f) where
-  foldMap1 f (Pure x)  = f x
-  foldMap1 f (Other y) = foldMap1 f y
-  {-# INLINE foldMap1 #-}
+instance (Foldable1 f) => Foldable1 (Lift f) where
+    foldMap1 f (Pure x)  = f x
+    foldMap1 f (Other y) = foldMap1 f y
+    {-# INLINE foldMap1 #-}
 #endif
 
 -- | Projection to the other functor.
