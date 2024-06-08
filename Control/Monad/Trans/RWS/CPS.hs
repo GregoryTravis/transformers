@@ -409,6 +409,9 @@ liftCallCC' callCC f = RWST $ \ r s w ->
 {-# INLINE liftCallCC' #-}
 
 -- | Lift a @catchE@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @catchE@ discards any output or changes to the state from
+-- the body on entering the handler.
 liftCatch :: Catch e m (a,s,w) -> Catch e (RWST r w s m) a
 liftCatch catchE m h =
     RWST $ \ r s w -> unRWST m r s w `catchE` \ e -> unRWST (h e) r s w

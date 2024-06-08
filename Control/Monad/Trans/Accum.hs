@@ -279,6 +279,9 @@ liftCallCC' callCC f = AccumT $ \ s ->
 {-# INLINE liftCallCC' #-}
 
 -- | Lift a @catchE@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @catchE@ discards any output from the body on entering
+-- the handler.
 liftCatch :: Catch e m (a, w) -> Catch e (AccumT w m) a
 liftCatch catchE m h =
     AccumT $ \ w -> runAccumT m w `catchE` \ e -> runAccumT (h e) w

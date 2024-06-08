@@ -336,6 +336,9 @@ liftCallCC' callCC f = StateT $ \ s ->
 {-# INLINE liftCallCC' #-}
 
 -- | Lift a @catchE@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies
+-- that the lifted @catchE@ rolls back to the original state on entering
+-- the handler.
 liftCatch :: Catch e m (a,s) -> Catch e (StateT s m) a
 liftCatch catchE m h =
     StateT $ \ s -> runStateT m s `catchE` \ e -> runStateT (h e) s

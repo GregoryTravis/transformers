@@ -283,14 +283,18 @@ censor f m = WriterT $ \ w -> do
 {-# INLINE censor #-}
 
 -- | Uniform lifting of a @callCC@ operation to the new monad.
--- This version rolls back to the original state on entering the
--- continuation.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @callCC@ discards any output from the body on entering
+-- the saved continuation.
 liftCallCC :: CallCC m (a, w) (b, w) -> CallCC (WriterT w m) a b
 liftCallCC callCC f = WriterT $ \ w ->
     callCC $ \ c -> unWriterT (f (\ a -> WriterT $ \ _ -> c (a, w))) w
 {-# INLINE liftCallCC #-}
 
 -- | Lift a @catchE@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @catchE@ discards any output from the body on entering
+-- the handler.
 liftCatch :: Catch e m (a, w) -> Catch e (WriterT w m) a
 liftCatch catchE m h = WriterT $ \ w ->
     unWriterT m w `catchE` \ e -> unWriterT (h e) w

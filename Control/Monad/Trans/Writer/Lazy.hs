@@ -317,6 +317,9 @@ censor f m = WriterT $ do
 {-# INLINE censor #-}
 
 -- | Lift a @callCC@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @callCC@ discards any output from the body on entering
+-- the saved condinuation.
 liftCallCC :: (Monoid w) => CallCC m (a,w) (b,w) -> CallCC (WriterT w m) a b
 liftCallCC callCC f = WriterT $
     callCC $ \ c ->
@@ -324,6 +327,9 @@ liftCallCC callCC f = WriterT $
 {-# INLINE liftCallCC #-}
 
 -- | Lift a @catchE@ operation to the new monad.
+-- The uniformity property (see "Control.Monad.Signatures") implies that
+-- the lifted @catchE@ discards any output from the body on entering
+-- the handler.
 liftCatch :: Catch e m (a,w) -> Catch e (WriterT w m) a
 liftCatch catchE m h =
     WriterT $ runWriterT m `catchE` \ e -> runWriterT (h e)
