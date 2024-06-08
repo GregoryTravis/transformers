@@ -16,7 +16,8 @@
 -- Stability   :  experimental
 -- Portability :  portable
 --
--- This monad transformer extends a monad with the ability to throw exceptions.
+-- This monad transformer extends a monad with the ability to throw
+-- and catch exceptions.
 --
 -- A sequence of actions terminates normally, producing a value,
 -- only if none of the actions in the sequence throws an exception.
@@ -80,7 +81,9 @@ import GHC.Generics
 
 -- | The parameterizable exception monad.
 --
--- Computations are either exceptions or normal values.
+-- Computations are either exceptions (of any type) or normal values.
+-- These computations are plain values, and are unrelated to the
+-- "Control.Exception" mechanism, which is tied to the 'IO' monad.
 --
 -- The 'return' function returns a normal value, while @>>=@ exits on
 -- the first exception.  For a variant that continues after an error
@@ -118,9 +121,12 @@ withExcept = withExceptT
 --
 -- @ExceptT@ constructs a monad parameterized over two things:
 --
--- * e - The exception type.
+-- * e - An arbitrary exception type.
 --
 -- * m - The inner monad.
+--
+-- The monadic computations are a plain values.  They are unrelated to
+-- the "Control.Exception" mechanism, which is tied to the 'IO' monad.
 --
 -- The 'return' function yields a computation that produces the given
 -- value, while @>>=@ sequences two subcomputations, exiting on the
