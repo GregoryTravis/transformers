@@ -69,8 +69,8 @@ import Data.Traversable (Traversable(traverse))
 import GHC.Generics
 #endif
 
--- | The parameterizable maybe monad, obtained by composing an arbitrary
--- monad with the 'Maybe' monad.
+-- | The parameterizable maybe monad, a strict monad obtained by composing
+-- an arbitrary monad with the 'Maybe' monad.
 --
 -- Computations are actions that may produce a value or exit.
 --

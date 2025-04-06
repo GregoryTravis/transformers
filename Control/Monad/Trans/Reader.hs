@@ -71,7 +71,7 @@ import Data.Functor ((<$))
 import GHC.Generics
 #endif
 
--- | The parameterizable reader monad.
+-- | The parameterizable reader monad, which is non-strict.
 --
 -- Computations are functions of a shared environment.
 --
@@ -122,6 +122,8 @@ withReader = withReaderT
 --
 -- <<images/bind-ReaderT.svg>>
 --
+--
+-- @ReaderT r m@ is strict if and only if @m@ is.
 newtype ReaderT r m a = ReaderT { runReaderT :: r -> m a }
 #if __GLASGOW_HASKELL__ >= 710
     deriving (Generic, Generic1)

@@ -64,7 +64,7 @@ import GHC.Generics
 #endif
 
 {- |
-Continuation monad.
+The continuation monad, which is non-strict.
 @Cont r a@ is a CPS ("continuation-passing style") computation that produces an
 intermediate result of type @a@ within a CPS computation whose final result type
 is @r@.
@@ -139,6 +139,8 @@ shift f = shiftT (f . (runIdentity .))
 --
 -- 'ContT' is not a functor on the category of monads, and many operations
 -- cannot be lifted through it.
+--
+-- @ContT r m@ is strict if and only if @m@ is.
 newtype ContT r m a = ContT { runContT :: (a -> m r) -> m r }
 #if __GLASGOW_HASKELL__ >= 704
     deriving (Generic)

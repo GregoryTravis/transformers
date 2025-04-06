@@ -57,7 +57,7 @@ import Data.Functor.Identity
 import GHC.Generics
 #endif
 
--- | Selection monad.
+-- | The selection monad, which is non-strict.
 type Select r = SelectT r Identity
 
 -- | Constructor for computations in the selection monad.
@@ -82,6 +82,8 @@ mapSelect f = mapSelectT (Identity . f . runIdentity)
 --
 -- 'SelectT' is not a functor on the category of monads, and many operations
 -- cannot be lifted through it.
+--
+-- @SelectT r m@ is strict if and only if @m@ is.
 newtype SelectT r m a = SelectT {
     -- | Runs a @SelectT@ computation with a function for evaluating
     -- answers to select a particular answer.

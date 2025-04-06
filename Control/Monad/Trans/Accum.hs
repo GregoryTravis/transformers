@@ -77,7 +77,8 @@ import GHC.Generics
 #endif
 
 -- ---------------------------------------------------------------------------
--- | An accumulation monad parameterized by the type @w@ of output to accumulate.
+-- | An accumulation monad (non-strict) parameterized by the type @w@
+-- of output to accumulate.
 --
 -- This monad is a more complex extension of both the reader and writer
 -- monads.  The 'return' function produces the output 'mempty', while @m
@@ -144,6 +145,8 @@ mapAccum f = mapAccumT (Identity . f . runIdentity)
 -- In applications requiring only the ability to accumulate an output and
 -- to inspect the output so far, it would be considerably more efficient
 -- to use a state monad transformer.
+--
+-- @AccumT w m@ is strict if and only if @m@ is.
 newtype AccumT w m a = AccumT {
     -- | Unwrap an accumulation computation.  For example, in the call
     --

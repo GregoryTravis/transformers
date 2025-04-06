@@ -78,7 +78,7 @@ import Data.Traversable (Traversable(traverse))
 import GHC.Generics
 #endif
 
--- | The parameterizable exception monad.
+-- | The parameterizable exception monad, which is strict.
 --
 -- Computations are either exceptions (of any type) or normal values.
 -- These computations are plain values, and are unrelated to the
@@ -118,7 +118,7 @@ withExcept = withExceptT
 
 -- | A monad transformer that adds exceptions to other monads.
 --
--- @ExceptT@ constructs a monad parameterized over two things:
+-- @ExceptT@ constructs a strict monad parameterized over two things:
 --
 -- * e - An arbitrary exception type.
 --
