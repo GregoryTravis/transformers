@@ -1,5 +1,10 @@
 -*-change-log-*-
 
+0.6.1.2 Ross Paterson <R.Paterson@city.ac.uk> Sep 2024
+	* Portability fixes for MicroHs
+	* Include image files in the bundle
+	* Expand ExceptT documentation
+
 0.6.1.1 Ross Paterson <R.Paterson@city.ac.uk> Aug 2023
 	* Additions to documentation, especially of AccumT.
 
