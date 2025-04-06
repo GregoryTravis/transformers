@@ -1,5 +1,9 @@
 -*-change-log-*-
 
+0.6.2.0 Ross Paterson <R.Paterson@city.ac.uk> Apr 2025
+	* Redefine runAccumT, runExceptT and runSelectT as fields
+	* Document strictness of some transformers
+
 0.6.1.2 Ross Paterson <R.Paterson@city.ac.uk> Sep 2024
 	* Portability fixes for MicroHs
 	* Include image files in the bundle
