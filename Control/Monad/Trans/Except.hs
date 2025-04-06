@@ -36,8 +36,7 @@ module Control.Monad.Trans.Except (
     mapExcept,
     withExcept,
     -- * The ExceptT monad transformer
-    ExceptT(ExceptT),
-    runExceptT,
+    ExceptT(..),
     mapExceptT,
     withExceptT,
     -- * Exception operations
@@ -131,7 +130,7 @@ withExcept = withExceptT
 -- The 'return' function yields a computation that produces the given
 -- value, while @>>=@ sequences two subcomputations, exiting on the
 -- first exception.
-newtype ExceptT e m a = ExceptT (m (Either e a))
+newtype ExceptT e m a = ExceptT { runExceptT :: m (Either e a) }
 #if __GLASGOW_HASKELL__ >= 710
     deriving (Generic, Generic1)
 #elif __GLASGOW_HASKELL__ >= 704
@@ -169,11 +168,6 @@ instance (Read e, Read1 m, Read a) => Read (ExceptT e m a) where
     readsPrec = readsPrec1
 instance (Show e, Show1 m, Show a) => Show (ExceptT e m a) where
     showsPrec = showsPrec1
-
--- | The inverse of 'ExceptT'.
-runExceptT :: ExceptT e m a -> m (Either e a)
-runExceptT (ExceptT m) = m
-{-# INLINE runExceptT #-}
 
 -- | Map the unwrapped computation using the given function.
 --

@@ -37,8 +37,7 @@ module Control.Monad.Trans.Select (
     runSelect,
     mapSelect,
     -- * The SelectT monad transformer
-    SelectT(SelectT),
-    runSelectT,
+    SelectT(..),
     mapSelectT,
     -- * Monad transformation
     selectToContT,
@@ -83,16 +82,13 @@ mapSelect f = mapSelectT (Identity . f . runIdentity)
 --
 -- 'SelectT' is not a functor on the category of monads, and many operations
 -- cannot be lifted through it.
-newtype SelectT r m a = SelectT ((a -> m r) -> m a)
+newtype SelectT r m a = SelectT {
+    -- | Runs a @SelectT@ computation with a function for evaluating
+    -- answers to select a particular answer.
+    runSelectT :: (a -> m r) -> m a }
 #if __GLASGOW_HASKELL__ >= 704
     deriving (Generic)
 #endif
-
--- | Runs a @SelectT@ computation with a function for evaluating answers
--- to select a particular answer.  (The inverse of 'select'.)
-runSelectT :: SelectT r m a -> (a -> m r) -> m a
-runSelectT (SelectT g) = g
-{-# INLINE runSelectT #-}
 
 -- | Apply a function to transform the result of a selection computation.
 -- This has a more restricted type than the @map@ operations for other

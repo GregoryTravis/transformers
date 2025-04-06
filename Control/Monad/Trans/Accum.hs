@@ -35,8 +35,7 @@ module Control.Monad.Trans.Accum (
     evalAccum,
     mapAccum,
     -- * The AccumT monad transformer
-    AccumT(AccumT),
-    runAccumT,
+    AccumT(..),
     execAccumT,
     evalAccumT,
     mapAccumT,
@@ -145,20 +144,18 @@ mapAccum f = mapAccumT (Identity . f . runIdentity)
 -- In applications requiring only the ability to accumulate an output and
 -- to inspect the output so far, it would be considerably more efficient
 -- to use a state monad transformer.
-newtype AccumT w m a = AccumT (w -> m (a, w))
+newtype AccumT w m a = AccumT {
+    -- | Unwrap an accumulation computation.  For example, in the call
+    --
+    -- @    (value, locals) <- runAccumT action globals@
+    --
+    -- the action is fed an initial environment @globals@, and @locals@ is
+    -- the sum of all arguments to calls of 'add' executed by the action.
+    runAccumT :: w -> m (a, w)
+    }
 #if __GLASGOW_HASKELL__ >= 704
     deriving (Generic)
 #endif
-
--- | Unwrap an accumulation computation.  For example, in the call
---
--- @    (value, locals) <- runAccumT action globals@
---
--- the action is fed an initial environment @globals@, and @locals@ is
--- the sum of all arguments to calls of 'add' executed by the action.
-runAccumT :: AccumT w m a -> w -> m (a, w)
-runAccumT (AccumT f) = f
-{-# INLINE runAccumT #-}
 
 -- | Extract the output from an accumulation computation.
 --
