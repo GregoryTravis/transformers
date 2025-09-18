@@ -64,6 +64,9 @@ module Control.Monad.Trans.State.Lazy (
     liftCatch,
     liftListen,
     liftPass,
+    -- * Conversion to and from the strict version
+    strictToLazyStateT,
+    lazyToStrictStateT,
     -- * Examples
     -- ** State monads
     -- $examples
@@ -78,6 +81,7 @@ module Control.Monad.Trans.State.Lazy (
 import Control.Monad.IO.Class
 import Control.Monad.Signatures
 import Control.Monad.Trans.Class
+import qualified Control.Monad.Trans.State.Strict as Strict
 #if MIN_VERSION_base(4,12,0)
 import Data.Functor.Contravariant
 #endif
@@ -357,6 +361,16 @@ liftPass pass m = StateT $ \ s -> pass $ do
     ~((a, f), s') <- runStateT m s
     return ((a, s'), f)
 {-# INLINE liftPass #-}
+
+-- | Convert from the strict version to the lazy version
+strictToLazyStateT :: Strict.StateT s m a -> StateT s m a
+strictToLazyStateT (Strict.StateT f) = StateT f
+{-# INLINE strictToLazyStateT #-}
+
+-- | Convert from the lazy version to the strict version
+lazyToStrictStateT :: StateT s m a -> Strict.StateT s m a
+lazyToStrictStateT (StateT f) = Strict.StateT f
+{-# INLINE lazyToStrictStateT #-}
 
 {- $examples
 
